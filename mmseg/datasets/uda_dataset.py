@@ -1,6 +1,6 @@
 import json
 import os.path as osp
-
+import os
 import mmcv
 import numpy as np
 import torch
@@ -84,12 +84,13 @@ class UDADataset(object):
                 self.file_to_idx[file] = i
             '''
             for i, file in enumerate(self.source.file_path['label']):
+                file = os.path.normpath(file)  # --patch-- file_name standardize
                 self.file_to_idx[file] = i
 
     def get_rare_class_sample(self):
         c = np.random.choice(self.rcs_classes, p=self.rcs_classprob)
         f1 = np.random.choice(self.samples_with_class[c])  # file_name
-
+        f1 = osp.normpath(os.getcwd() + '/' + f1)  # --patch-- standardize file name in order to match
         i1 = self.file_to_idx[f1]
         s1 = self.source[i1]
         if self.rcs_min_crop_ratio > 0:
@@ -223,4 +224,3 @@ class OrgUDADataset(object):
 
     def __len__(self):
         return len(self.source) * len(self.target)
-

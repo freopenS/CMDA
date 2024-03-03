@@ -224,7 +224,7 @@ class DSECDataset(Dataset):
             output['image'] = image
 
         if 'wrap_image' in self.outputs:
-            wrap_image_name = image_path.replace('images/left/rectified', 'wrap_images')
+            wrap_image_name = image_path.replace('images/left/rectified', 'warp_images')
             wrap_image_pil = Image.open(wrap_image_name).convert('RGB')
             if 'label' not in self.outputs:  # do Data Augmentation
                 wrap_image_pil = wrap_image_pil.crop(box=(x, y, x + self.crop_size[0], y + self.crop_size[1]))
